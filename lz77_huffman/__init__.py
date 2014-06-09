@@ -15,12 +15,12 @@ def lz77_compress(text):
     """
 
     text_len = len(text)
-    lz77_tuples = list(lz77.compress(text, sliding_win_len=128, preview_win_len=64))
+    lz77_tuples = list(lz77.compress(text, sliding_win_len=255, preview_win_len=255))
     lz77_text, codes, lz77_inter_text, huff_text = lz77.pack(lz77_tuples)
     ntext_len = len(lz77_text)
     print('Size before: %.2fkb, size after: %.2fkb, compression rate: %.2f%%'
-          % (text_len/1024, ntext_len/1024,
-             100 - ntext_len * 100 / text_len))
+          % (text_len/1024.0, ntext_len/1024.0,
+             100.0 - ntext_len * 100.0 / text_len))
 
     return lz77_text
 
