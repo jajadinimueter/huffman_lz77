@@ -32,14 +32,27 @@ def lz77_decompress(text):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='lz77-hoffman')
-    parser.add_argument('-c', action='store_true', help='compress')
-    parser.add_argument('-d', action='store_true', help='compress')
+    parser.add_argument('-c', action='store_true', dest='compress', help='Compress File',
+                        default=False)
+    parser.add_argument('-d', action='store_true', dest='decompress', help='Decompress File',
+                        default=False)
+    parser.add_argument('filename', help='The File')
+    parser.add_argument('out_filename', help='The Out-File')
+    args = parser.parse_args()
 
-    files = ['test_ipsum2.txt', 'test_ipsum.txt']
-    for file_ in files:
-        with open(file_, 'rb') as f:
-            print('Compressing file %s' % file_)
+    if not args.compress and not args.decompress:
+        parser.print_help()
+        exit(1)
+
+    fname_out = os.path.abspath(args.out_filename)
+    fname = os.path.abspath(args.filename)
+
+    with open(fname, 'rb') as f:
+        if args.compress:
+            print('Compressing file %s' % fname)
             t1 = f.read()
-            t = lz77_compress(t1)
-            t2 = lz77_decompress(t)
-            assert t1 == t2
+            result = lz77_compress(t1)
+        else:
+            result = lz77_decompress(f.read())
+        with open(fname_out, 'wb') as fout:
+            fout.write(result)
