@@ -1,6 +1,6 @@
 Combines Huffman and LZ77
 
-Compres:
+Compress:
 ```
 python lz77_huffman/__init__.py -c file-to-compress out-file
 ```
